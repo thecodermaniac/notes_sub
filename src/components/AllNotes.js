@@ -1,8 +1,9 @@
 import React from 'react'
+import NotesCard from './NotesCard'
 
 function AllNotes() {
   return (
-    <div className='container'>AllNotes</div>
+    <NotesCard />
   )
 }
 

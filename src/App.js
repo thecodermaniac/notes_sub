@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState}from "react";
 import './styles/App.css'
 import Navbar from "./components/Navbar";
 import SubjectList from "./components/SubjectList";
@@ -8,17 +8,31 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import NotesTake from "./components/NotesTake";
 function App() {
+const [subject,setSubject]=useState('')
   return (
     <Router>
-        <Navbar />
-        <Switch>
+      <Navbar />
+      <Switch>
         <Route exact path="/home">
-          <SubjectList/>
-            <AllNotes/>
-          </Route>
-        </Switch>
-      </Router>
+          <SubjectList setSubject={setSubject}/>
+          <AllNotes />
+        </Route>
+        <Route exact path="/math">
+          <NotesTake Subject={subject}/>
+        </Route>
+        <Route exact path="/science">
+          <NotesTake Subject={subject}/>
+        </Route>
+        <Route exact path="/english">
+          <NotesTake Subject={subject}/>
+        </Route>
+        <Route exact path="/history">
+          <NotesTake Subject={subject}/>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
