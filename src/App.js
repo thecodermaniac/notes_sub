@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import NotesTake from "./components/NotesTake";
 function App() {
-const [subject,setSubject]=useState('')
+const [subject,setSubject]=useState(localStorage?.getItem('subject'))
   return (
     <Router>
       <Navbar />
