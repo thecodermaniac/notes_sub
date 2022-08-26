@@ -18,7 +18,7 @@ function AllNotes() {
     body: ''
   })
   const updateNote = (curnote) => {
-    console.log(curnote.id);
+    // console.log(curnote.id);
     setcurrid(curnote.id)
     seteditnotes({ title: curnote.title, subject: curnote.subject, body: curnote.body })
     refr.current.click()
@@ -43,7 +43,7 @@ function AllNotes() {
     return () => unsub();
   }, [])
 
-  console.log(notesarr);
+  // console.log(notesarr);
 
   return (
     <>

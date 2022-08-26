@@ -36,7 +36,7 @@ function NotesTake({ Subject }) {
         setload(true)
     })
     const updateNote = (curnote) => {
-        console.log(curnote.id);
+        // console.log(curnote.id);
         setcurrid(curnote.id)
         seteditnotes({ title: curnote.title, subject: curnote.subject, body: curnote.body })
         refr.current.click()
@@ -49,7 +49,7 @@ function NotesTake({ Subject }) {
 
     const handleclick = async (e) => {
         e.preventDefault()
-        console.log(Subject);
+        // console.log(Subject);
         setload(false)
         await addDoc(collection(db, "notes"), {
             subject: notes.subject,
@@ -57,7 +57,7 @@ function NotesTake({ Subject }) {
             body: notes.body
 
         })
-        console.log(notes);
+        // console.log(notes);
         setload(true)
     }
     return (
