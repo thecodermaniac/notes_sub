@@ -1,4 +1,12 @@
 body {
   background-image: url(../assets/back.png);
   background-attachment: fixed;
+
 }
+@media screen and (min-width:200px) {
+  body{
+      background-image: url(../assets/back.png);
+      background-size: cover;
+      background-position: center;
+      }
+  }
