@@ -8,6 +8,7 @@ import NotesCard from './NotesCard'
 
 function NotesTake({ Subject }) {
     let refr = useRef()
+    const [load, setload] = useState(true)
     localStorage.setItem('subject', Subject)
     const [currid, setcurrid] = useState(null)
     const notesdb = collection(db, 'notes')
@@ -26,11 +27,13 @@ function NotesTake({ Subject }) {
 
     const q = query(notesdb, where("subject", "==", localStorage?.getItem('subject')))
     onSnapshot(q, (snapshot) => {
+        setload(false)
         var notearr = []
         snapshot.docs.forEach((doc) => {
             notearr.push({ ...doc.data(), id: doc.id })
         })
         setcatNotes(notearr)
+        setload(true)
     })
     const updateNote = (curnote) => {
         console.log(curnote.id);
@@ -39,12 +42,15 @@ function NotesTake({ Subject }) {
         refr.current.click()
     }
     const handleupdate = async () => {
+        setload(true)
         await updateDoc(doc(db, "notes", currid), { title: editnotes.title, body: editnotes.body, subject: editnotes.subject });
+        setload(false)
     }
 
     const handleclick = async (e) => {
         e.preventDefault()
         console.log(Subject);
+        setload(false)
         await addDoc(collection(db, "notes"), {
             subject: notes.subject,
             title: notes.title,
@@ -52,7 +58,7 @@ function NotesTake({ Subject }) {
 
         })
         console.log(notes);
-        setnotes({title:'',body:''})
+        setload(true)
     }
     return (
         <>
@@ -60,46 +66,51 @@ function NotesTake({ Subject }) {
                 Launch demo modal
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Update your note</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Update your note</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <div class="modal-body">
+                        <div className="modal-body">
                             <form>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label">New Title</label>
-                                    <input type="text" class="form-control" placeholder="Generic subject title" onChange={(e) => { seteditnotes({ ...editnotes, title: e.target.value }) }} value={editnotes.title} />
+                                <div className="mb-3">
+                                    <label htmlFor="exampleFormControlInput1" className="form-label">New Title</label>
+                                    <input type="text" className="form-control" placeholder="Generic subject title" onChange={(e) => { seteditnotes({ ...editnotes, title: e.target.value }) }} value={editnotes.title} />
                                 </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlTextarea1" class="form-label">Full Notes...</label>
-                                    <textarea class="form-control" rows="3" onChange={(e) => { seteditnotes({ ...editnotes, body: e.target.value }) }} value={editnotes.body} />
+                                <div className="mb-3">
+                                    <label htmlFor="exampleFormControlTextarea1" className="form-label">Full Notes...</label>
+                                    <textarea className="form-control" rows="3" onChange={(e) => { seteditnotes({ ...editnotes, body: e.target.value }) }} value={editnotes.body} />
                                 </div>
                             </form>
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-outline-secondary" onClick={handleupdate}>Update Notes</button>
+                        <div className="modal-footer">
+                            <button type="submit" className="btn btn-outline-secondary" onClick={handleupdate}>Update Notes</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="d-flex justify-content-center">
+                <p className="text-white fs-3 font-monospace">Add {localStorage?.getItem('subject')} Notes</p></div>
             <form className='container'>
-                <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Generic subject title" onChange={(e) => { setnotes({ ...notes, title: e.target.value }) }} value={notes.title}/>
+                <div className="mt-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label text-white fs-4 font-monospace">Topic</label>
+                    <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Generic subject title" onChange={(e) => { setnotes({ ...notes, title: e.target.value }) }} required={true} />
                 </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Full Notes...</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(e) => { setnotes({ ...notes, body: e.target.value }) }} value={notes.body}/>
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlTextarea1" className="form-label text-white fs-4 font-monospace">Full Notes...</label>
+                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(e) => { setnotes({ ...notes, body: e.target.value }) }} required={true} />
                 </div>
-                <button type="submit" class="btn btn-outline-secondary" onClick={handleclick}>Add Notes</button>
+                <button type="submit" className="btn btn-light" onClick={handleclick}>Add Notes</button>
             </form>
-
+            {categorynotes.length === 0 ? <div className="container mt-4">
+                <p className="text-white fs-5 font-monospace">Empty...</p></div> : <div className="container mt-4">
+                <p className="text-white fs-5 font-monospace">Notes of {localStorage?.getItem('subject')}</p></div>}
             {/* categorywise show of notes */}
-            {
+            {!load ? <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-light" role="status">
+                <span className="sr-only"></span></div></div> :
                 categorynotes.map((note) => {
                     return <NotesCard note={note} key={note.id} updateNote={updateNote} />
                 })

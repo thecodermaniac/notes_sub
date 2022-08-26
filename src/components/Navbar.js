@@ -9,16 +9,16 @@ function Navbar() {
       <nav className="navbar sticky-top navbar-expand-lg navbar-light fixed-top mask-custom shadow-0 ">
         <div className="container">
           <span className="navbar-brand">
-            <span style={{ color: "#5e9693" }}>Psycho</span>
-            <span style={{ color: "#fff" }}>logist</span>
+            <span style={{ color: "#fff" }}>Note-</span>
+            <span style={{ color: "#fff" }}>Maniac</span>
           </span>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <Link className='nav-link active' to='/home'>Home</Link>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item  font-monospace">
+                <Link className='nav-link text-white' to='/home'>Home</Link>
               </li>
             </ul>
           </div>

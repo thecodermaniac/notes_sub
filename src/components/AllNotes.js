@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import NotesCard from './NotesCard'
 import { db } from '../firebase'
 import {
@@ -9,6 +9,7 @@ import {
 
 function AllNotes() {
   let refr = useRef()
+  const [load, setload] = useState(true)
   const [currid, setcurrid] = useState(null)
   const [notesarr, setnotesarr] = useState([])
   const [editnotes, seteditnotes] = useState({
@@ -24,7 +25,9 @@ function AllNotes() {
   }
 
   const handleupdate = async () => {
-    await updateDoc(doc(db, "notes", currid), { title: editnotes.title, body: editnotes.body, subject: editnotes.subject });
+
+    await updateDoc(doc(db, "notes", currid), { title: editnotes.title, body: editnotes.body, subject: editnotes.subject })
+  
   }
 
   useEffect(() => {
@@ -35,6 +38,7 @@ function AllNotes() {
         notesArray.push({ ...doc.data(), id: doc.id });
       });
       setnotesarr(notesArray);
+      setload(true)
     });
     return () => unsub();
   }, [])
@@ -47,35 +51,41 @@ function AllNotes() {
         Launch demo modal
       </button>
 
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Update your note</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Update your note</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
+            <div className="modal-body">
               <form>
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">New Title</label>
-                  <input type="text" class="form-control" placeholder="Generic subject title" onChange={(e) => { seteditnotes({ ...editnotes, title: e.target.value }) }} value={editnotes.title} />
+                <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">New Title</label>
+                  <input type="text" className="form-control" placeholder="Generic subject title" onChange={(e) => { seteditnotes({ ...editnotes, title: e.target.value }) }} value={editnotes.title} />
                 </div>
-                <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Full Notes...</label>
-                  <textarea class="form-control" rows="3" onChange={(e) => { seteditnotes({ ...editnotes, body: e.target.value }) }} value={editnotes.body} />
+                <div className="mb-3">
+                  <label htmlFor="exampleFormControlTextarea1" className="form-label">Full Notes...</label>
+                  <textarea className="form-control" rows="3" onChange={(e) => { seteditnotes({ ...editnotes, body: e.target.value }) }} value={editnotes.body} />
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-outline-secondary" onClick={handleupdate}>Update Notes</button>
+            <div className="modal-footer">
+              <button type="submit" className="btn btn-outline-secondary" onClick={handleupdate}>Update Notes</button>
             </div>
           </div>
         </div>
       </div>
-      {notesarr.map((note) => {
+      {notesarr.length === 0 ? <div className="container mt-4">
+        <p className="text-white fs-5 font-monospace">Empty...</p></div> : <div className="container mt-4">
+        <p className="text-white fs-5 font-monospace">Notes of all Subjects.</p></div>}
+      {!load ? <div className="d-flex justify-content-center mt-4"><div className="spinner-border text-light" role="status">
+        <span className="sr-only"></span>
+      </div></div> : notesarr.map((note) => {
         return <NotesCard note={note} key={note.id} updateNote={updateNote} />
       })}
+
     </>
   )
 }

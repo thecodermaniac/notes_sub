@@ -6,7 +6,8 @@ import AllNotes from "./components/AllNotes";
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom";
 import NotesTake from "./components/NotesTake";
 function App() {
@@ -15,6 +16,7 @@ const [subject,setSubject]=useState(localStorage?.getItem('subject'))
     <Router>
       <Navbar />
       <Switch>
+      <Route path="/" exact component={() => <Redirect to="/home" />} />
         <Route exact path="/home">
           <SubjectList setSubject={setSubject}/>
           <AllNotes />

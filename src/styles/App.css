@@ -1,3 +1,4 @@
 body {
-    background-color: rgb(145, 157, 165);
-  }
+  background-image: url(../assets/back.png);
+  background-attachment: fixed;
+}
